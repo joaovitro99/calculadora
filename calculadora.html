@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+         body {
+            height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+        .cabecario {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 36px;
+            text-align: center;
+            color:white;
+            background-color: black;
+            justify-content: center;
+        }
+        .corpo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 24px;
+            text-align: center;
+            color: black;
+            justify-content: center;
+            background-color: white;
+            padding: 2%;
+        }
+        .calculadora{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            text-align: center;
+            color: black;
+            background-color: lightgray;
+            width: 500px;
+            height: 700px;
+            padding: 5%;
+        }
+        .tela{
+            color:black;
+            background-color: lightgoldenrodyellow;
+            border: 1px solid #222222;
+            width: 450px;
+            height: 105px;
+            font-size: 48px;
+        }
+        .botoes{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            text-align: center;
+            color: black;
+            background-color: lightgray;
+            justify-content: space-around;
+        }
+        .numeros{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            text-align: center;
+            color: black;
+            height:75%;
+            padding: 10%;
+        }
+        .operadores{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            text-align: center;
+            color: black;
+            height: 25%;
+        }
+        button {
+            color:black;
+            border: 1px solid #222222;
+            height:105px;
+            width: 75px;
+        }
+        .operadores .button{
+            background-color: rgb(218, 216, 216);
+        }
+        .numeros .button{
+            background-color: grey;
+        }
+    </style>
+    <meta charset="utf-8">
+    <title>Calculadora</title>
+</head>
+<body>
+    <div class="cabecario">Calculadora</div>
+    <div class="corpo">
+        <div class="calculadora">
+            <div class="tela"></div>
+            <div class="botoes">
+                <div class="operadores"></div>
+                <div class="numeros"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const numeros = document.querySelector(".numeros");
+        const operadores = document.querySelector(".operadores");
+        const tela = document.querySelector('.tela');
+        let vetor = [];
+        let elementos = [];
+        let ordemOperacoes = [];
+        const operacoes = ['+', '-', '*', '/', '='];
+        criarBotoes();
+
+        function criarBotoes() {
+            for (let i = 0; i < 10; i++) {
+                const quadrado = document.createElement('button');
+                quadrado.classList.add('button');
+                quadrado.textContent = i;
+                numeros.appendChild(quadrado);
+
+                quadrado.addEventListener('click', function () {
+                    vetor.push(quadrado.textContent);
+                    tela.textContent = vetor.join('');
+                });
+            }
+
+
+            for (let i = 0; i < operacoes.length; i++) {
+                const quadrado = document.createElement('button');
+                quadrado.classList.add('button');
+                quadrado.textContent = operacoes[i];
+                operadores.appendChild(quadrado);
+
+                quadrado.addEventListener('click', function () {
+                    vetor.push(quadrado.textContent);
+                    if(quadrado.textContent == '='){
+                        let res = calcular(vetor);
+                        tela.textContent = res;
+                    }
+                    else{
+                        tela.textContent = vetor.join('');
+                    }
+                });
+            }
+        }
+        /*function SepararElementos(vetor,operacoes,ordemOperacoes){
+            let i=0;
+            while(i<= vetor.length){
+                j = i;
+                for( ;vetor[i] in operacoes;i++){
+                }
+                elementos.push(Number(vetor.slice(j,i)));
+                if(vetor[i] in operacoes){
+                    ordemOperacoes.push(vetor[i]);
+                }
+                i++;
+            }  
+        }*/
+        function calcular(vetor) {
+            // Implemente a lógica para calcular o resultado a partir dos elementos
+            let resultado = 0;
+            let operador = '+';
+
+            for (const elemento of vetor) {
+                let numero = parseFloat(elemento);
+                if (!isNaN(numero)) {
+                    if (operador === '+') {
+                        resultado += numero;
+                    } else if (operador === '-') {
+                        resultado -= numero;
+                    } else if (operador === '*') {
+                        resultado *= numero;
+                    } else if (operador === '/') {
+                        resultado /= numero;
+                    }
+                } else {
+                    operador = elemento;
+                }
+            }
+
+            return resultado;
+        }
+        /*function calcular(elementos,operacoes,vetor,ordemOperacoes){
+            SepararElementos(vetor,operacoes,ordemOperacoes);
+            let preliminar = [];
+            let res =0;
+            for(let i=0;i < ordemOperacoes.length;i++){
+                if(ordemOperacoes[i] == '*' ){
+                    preliminar.push(elementos[i]*elementos[i+1]);
+                    elementos.splice(i,2);
+                    ordemOperacoes.splice(i,1);
+                    i--;
+                }
+                else if(ordemOperacoes[i] == '/'){
+                    preliminar.push(elementos[i]/elementos[i+1]);
+                    elementos.splice(i,2);
+                    ordemOperacoes.splice(i,1);
+                    i--;
+                }
+            }
+            for(let i=0;i < ordemOperacoes.length;i++){
+                if(ordemOperacoes[i] == '+' ){
+                    preliminar.push(elementos[i]+elementos[i+1]);
+                }
+                else if(ordemOperacoes[i] == '-' ){
+                    preliminar.push(elementos[i]-elementos[i+1]);
+                }
+            }
+            res = preliminar.reduce((acc, curr) => acc + curr, 0);
+            return res;*/
+        
+    </script>
+</body>
+</html>
